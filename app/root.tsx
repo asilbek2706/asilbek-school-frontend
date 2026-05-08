@@ -37,7 +37,9 @@ export function Layout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <Navbar />
-        {children}
+        <main className="container min-h-screen py-16">
+          {children}
+        </main>
         <Footer />
         <ScrollRestoration />
         <Scripts />
