@@ -146,6 +146,7 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+    scroll-behavior: smooth;
   }
   html {
     @apply font-sans;
@@ -160,7 +161,7 @@ body {
 .animate-marquee {
   display: flex;
   width: max-content;
-  animation: marquee 30s linear infinite; /* Sekinroq va yumshoqroq */
+  animation: marquee 30s linear infinite;
 }
 
 .animate-marquee:hover {
