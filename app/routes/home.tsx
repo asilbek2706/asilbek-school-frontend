@@ -1,7 +1,7 @@
-import Intro from "../../components/Intro";
+import Intro from "../../components/HomePage/Intro";
 import type { Route } from "./+types/home";
-import Banner from "../../components/Banner";
-import LearningPaths from "../../components/LearningPath";
+import Banner from "../../components/HomePage/Banner";
+import LearningPaths from "../../components/HomePage/LearningPath";
 
 export function meta({}: Route.MetaArgs) {
   return [
