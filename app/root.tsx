@@ -36,13 +36,19 @@ export function Layout({ children }: { children: ReactNode }) {
         <Links />
       </head>
       <body>
-        <Navbar />
-        <main className="container min-h-screen py-16">
-          {children}
-        </main>
-        <Footer />
-        <ScrollRestoration />
-        <Scripts />
+
+        <div className="flex flex-col min-h-screen">
+          <Navbar />
+
+          <main className="flex-grow container mx-auto px-4 py-8 relative z-10">
+            {children}
+          </main>
+
+          <Footer />
+        </div>
+
+      <ScrollRestoration />
+      <Scripts />
       </body>
     </html>
   );
