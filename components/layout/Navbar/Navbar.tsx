@@ -40,7 +40,7 @@ const Navbar = () => {
             className="w-9 h-9 md:w-10 md:h-10 object-contain"
           />
           <span className="text-white font-bold text-xl tracking-tight group-hover:text-red-500 transition-colors">
-            Asilbek-school
+            Frontend
           </span>
         </Link>
 

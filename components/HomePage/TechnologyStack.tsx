@@ -1,20 +1,10 @@
-const technologies = [
-  { name: "HTML5", icon: "bi-filetype-html", color: "text-orange-500" },
-  { name: "CSS3", icon: "bi-css", color: "text-blue-500" },
-  { name: "JavaScript", icon: "bi-filetype-js", color: "text-yellow-400" },
-  { name: "React", icon: "bi-filetype-jsx", color: "text-cyan-400" },
-  { name: "Next.js", icon: "bi-bootstrap-reboot", color: "text-white" },
-  { name: "Tailwind", icon: "bi-palette2", color: "text-teal-400" },
-  { name: "Bootstrap", icon: "bi-bootstrap-fill", color: "text-purple-500" },
-  { name: "TypeScript", icon: "bi-code-slash", color: "text-blue-600" },
-  { name: "Git", icon: "bi-git", color: "text-red-500" },
-];
+import { technologies } from "../../data/technologiesData";
 
 const TechnologyStack = () => {
   const doubleTechs = [...technologies, ...technologies];
 
   return (
-    <div className="relative w-full flex items-center justify-between bg-gradient  py-8 from-gray-900/60 via-gray-800/40 borderborder border-white/5 to-red-950/20 border  overflow-hidden rounded-[2.5rem] mt-8">
+    <div className="relative w-full flex items-center justify-between bg-gradient-to-r py-2 md:py-2 from-gray-900/60 via-gray-800/40 border border-white/5 to-red-950/20 border  overflow-hidden rounded-[2.5rem] mt-8">
 
       <div className="relative flex overflow-x-hidden border-transparent py-4">
         <div className="animate-marquee flex items-center">

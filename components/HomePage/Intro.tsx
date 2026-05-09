@@ -1,10 +1,9 @@
-import { SearchInput } from "./Input";
 import TechnologyStack from "./TechnologyStack";
 
 const Intro = () => {
   return (
-    <div className="intro-section py-10 bg-transparent">
-      <div className="container">
+    <div className="py-10 bg-transparent relative">
+      <div className="container mx-auto px-6">
         <h1 className="text-center font-bold text-4xl">
           Frontend olamiga professional qadam qo'ying
         </h1>
@@ -17,7 +16,6 @@ const Intro = () => {
           Bizning&nbsp; Frontend Darslari&nbsp; kursimiz sizni bosqichma-bosqich
           o'rgatadi va sizni zamonaviy web dasturchi sifatida tayyorlaydi.
         </p>
-        <SearchInput />
         <TechnologyStack />
       </div>
     </div>
