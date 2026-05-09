@@ -1,5 +1,16 @@
-const AboutPage = () => {
-    return <div>About Page</div>
-}
+import AboutHeroBanner from "../../components/AboutPage/Banner";
+import CoreValues from "../../components/AboutPage/CoreValues";
+import TeachingRoadmap from "../../components/AboutPage/TeachingRoadmap";
 
-export default AboutPage
+const AboutPage = () => {
+
+  return (
+    <div>
+        <AboutHeroBanner />
+        <CoreValues />
+        <TeachingRoadmap />
+    </div>
+  );
+};
+
+export default AboutPage;
