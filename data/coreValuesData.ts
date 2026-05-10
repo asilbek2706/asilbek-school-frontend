@@ -1,4 +1,4 @@
-export   const values = [
+export const values = [
     {
       title: "CLEAN CODE ARXITEKTURASI",
       icon: "/icons/glass-icon.png",

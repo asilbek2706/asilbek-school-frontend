@@ -1,12 +1,22 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router";
+import { NavLink, Link } from "react-router"; 
 import "./Navbar.css";
+
+interface NavLinkProps{
+  isActive: boolean;
+}
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
+
+  const getDesktopClass = ({ isActive }: NavLinkProps) => 
+    isActive ? "nav-link-desktop active" : "nav-link-desktop";
+
+  const getMobileClass = ({ isActive }: NavLinkProps) => 
+    isActive ? "mobile-link active" : "mobile-link";
 
   useEffect(() => {
     if (isOpen) {
@@ -27,7 +37,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="navbar-container sticky top-0 z-50 border-b border-gray-700/50">
+    <nav className="navbar-container sticky top-0 z-50 border-b border-gray-700/50 backdrop-blur-md">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <Link
           to="/"
@@ -46,21 +56,21 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center gap-4 lg:gap-6">
           <div className="flex items-center gap-4 lg:gap-6 border-r border-gray-700 pr-4">
-            <Link to="/" className="nav-link-desktop">
+            <NavLink to="/" end className={getDesktopClass}>
               Asosiy
-            </Link>
-            <Link to="/about" className="nav-link-desktop">
+            </NavLink>
+            <NavLink to="/about" className={getDesktopClass}>
               Biz haqimizda
-            </Link>
-            <Link to="/courses" className="nav-link-desktop">
+            </NavLink>
+            <NavLink to="/courses" className={getDesktopClass}>
               Kurslar
-            </Link>
-            <Link to="/faq" className="nav-link-desktop">
+            </NavLink>
+            <NavLink to="/faq" className={getDesktopClass}>
               FAQ
-            </Link>
-            <Link to="/contact" className="nav-link-desktop">
+            </NavLink>
+            <NavLink to="/contact" className={getDesktopClass}>
               Bog'lanish
-            </Link>
+            </NavLink>
           </div>
 
           <div className="flex items-center gap-3">
@@ -84,23 +94,7 @@ const Navbar = () => {
 
             <Link to="/login">
               <button className="login-btn-desktop flex items-center gap-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="bi bi-box-arrow-in-right"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"
-                  />
-                  <path
-                    fillRule="evenodd"
-                    d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"
-                  />
-                </svg>
+                <i className="bi bi-box-arrow-in-right text-lg"></i>
                 Kirish
               </button>
             </Link>
@@ -111,94 +105,51 @@ const Navbar = () => {
               rel="noopener noreferrer"
             >
               <button className="tg-btn-desktop flex items-center gap-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="bi bi-telegram"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.287 5.906q-1.168.486-4.666 2.01-.567.225-.595.442c-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294q.39.01.868-.32 3.269-2.206 3.374-2.23c.05-.012.12-.026.166.016s.042.12.037.141c-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8 8 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629q.14.092.27.187c.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.4 1.4 0 0 0-.013-.315.34.34 0 0 0-.114-.217.53.53 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09" />
-                </svg>
+                <i className="bi bi-telegram text-lg"></i>
                 Telegram
               </button>
             </a>
           </div>
         </div>
 
+        {/* Hamburger Button */}
         <button
           onClick={toggleMenu}
           className="md:hidden text-white p-2 z-[60] hover:bg-white/10 rounded-lg transition-colors"
         >
           {isOpen ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="30"
-              height="30"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-            >
-              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-            </svg>
+            <i className="bi bi-x-lg text-2xl"></i>
           ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="30"
-              height="30"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-            >
-              <path
-                fillRule="evenodd"
-                d="M2.5 12.5a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zm0-4a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zm0-4a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11z"
-              />
-            </svg>
+            <i className="bi bi-list text-3xl"></i>
           )}
         </button>
       </div>
 
       {/* Mobile Menu Panel */}
       <div className={`mobile-menu ${isOpen ? "open" : ""} md:hidden`}>
-        <div className="flex flex-col p-6 gap-y-4 h-full pt-24">
-          <Link to="/" onClick={closeMenu} className="mobile-link">
+        <div className="flex flex-col p-6 gap-y-4 h-full pt-28">
+          <NavLink to="/" end onClick={closeMenu} className={getMobileClass}>
             Asosiy
-          </Link>
-          <Link to="/about" onClick={closeMenu} className="mobile-link">
+          </NavLink>
+          <NavLink to="/about" onClick={closeMenu} className={getMobileClass}>
             Biz haqimizda
-          </Link>
-          <Link to="/courses" onClick={closeMenu} className="mobile-link">
+          </NavLink>
+          <NavLink to="/courses" onClick={closeMenu} className={getMobileClass}>
             Kurslar
-          </Link>
-          <Link to="/faq" onClick={closeMenu} className="mobile-link">
+          </NavLink>
+          <NavLink to="/faq" onClick={closeMenu} className={getMobileClass}>
             FAQ
-          </Link>
-          <Link to="/contact" onClick={closeMenu} className="mobile-link">
+          </NavLink>
+          <NavLink to="/contact" onClick={closeMenu} className={getMobileClass}>
             Bog'lanish
-          </Link>
+          </NavLink>
 
-          <div className="h-[1px] bg-gray-700 my-4"></div>
+          <div className="h-[1px] bg-gray-800 my-4 shadow-[0_0_10px_rgba(255,255,255,0.1)]"></div>
 
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-4">
             <Link to="/login" onClick={closeMenu}>
-              <button className="w-full py-3 border-2 border-red-500 text-white font-bold rounded-xl flex items-center justify-center gap-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="bi bi-box-arrow-in-right"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"
-                  />
-                  <path
-                    fillRule="evenodd"
-                    d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"
-                  />
-                </svg>
+              <button className="w-full py-4 border-2 border-red-500 text-white font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-3 active:scale-95 transition-all">
+                <i className="bi bi-box-arrow-in-right text-xl"></i>
                 Kirish
               </button>
             </Link>
@@ -207,17 +158,8 @@ const Navbar = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <button className="w-full py-3 bg-blue-600 text-white flex items-center justify-center gap-2 font-bold rounded-xl">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="bi bi-telegram"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.287 5.906q-1.168.486-4.666 2.01-.567.225-.595.442c-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294q.39.01.868-.32 3.269-2.206 3.374-2.23c.05-.012.12-.026.166.016s.042.12.037.141c-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8 8 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629q.14.092.27.187c.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.4 1.4 0 0 0-.013-.315.34.34 0 0 0-.114-.217.53.53 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09" />
-                </svg>
+              <button className="w-full py-4 bg-blue-600 text-white flex items-center justify-center gap-3 font-black uppercase tracking-widest rounded-2xl active:scale-95 transition-all shadow-lg shadow-blue-600/20">
+                <i className="bi bi-telegram text-xl"></i>
                 Telegram
               </button>
             </a>
