@@ -4,7 +4,6 @@ import { goals } from "../../data/ourGoals.data";
 const OurGoals = () => {
   return (
     <section className="bg-transparent relative overflow-hidden rounded-[2.5rem] border border-white/5 mt-12 p-6 md:p-12 shadow-2xl">
-      {/* Background Glows */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full pointer-events-none">
         <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-red-600/5 blur-[120px] rounded-full"></div>
         <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-blue-600/5 blur-[120px] rounded-full"></div>
@@ -12,7 +11,6 @@ const OurGoals = () => {
 
       <div className="container mx-auto max-w-7xl px-6 relative z-10">
         
-        {/* Header Section */}
         <div className="text-center space-y-4 mb-20">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -45,7 +43,6 @@ const OurGoals = () => {
           </motion.p>
         </div>
 
-        {/* Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {goals.map((goal, index) => (
             <motion.div
