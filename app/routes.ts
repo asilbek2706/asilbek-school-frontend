@@ -5,7 +5,7 @@ export default [
     route("/login", "routes/login.tsx") ,
     route("/about", "routes/about.tsx"),
     route("/courses", "routes/courses.tsx"),
-    // route("/courses/:id", "routes/courses.tsx"),
-    route("/faq", "routes/faq.tsx"),
+    route("/courses/:id", "routes/courses/courseDetail.tsx"),
+    route("/courses/:id/lessons/:lessonTitle", "routes/courses/lessons/lessonDetail.tsx"),
     route("/contact", "routes/contact.tsx"),
 ] satisfies RouteConfig;

@@ -1,5 +1,5 @@
 import CourseSection from "../../components/CoursesPage/CourseSection"
-import { SearchInput } from "../../components/HomePage/Input"
+import { SearchInput } from "../../components/CoursesPage/Input"
 
 const Courses = () => {
     return <div>

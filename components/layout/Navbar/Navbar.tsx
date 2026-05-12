@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import * as React from "react";
 import { NavLink, Link } from "react-router"; 
 import { motion, AnimatePresence } from "framer-motion";
 import "./Navbar.css";
@@ -8,14 +8,13 @@ interface NavLinkProps {
 }
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [scrolled, setScrolled] = React.useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
 
-  // Scroll hodisasini kuzatish (Navbar dizaynini o'zgartirish uchun)
-  useEffect(() => {
+  React.useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -27,11 +26,11 @@ const Navbar = () => {
   const getMobileClass = ({ isActive }: NavLinkProps) => 
     isActive ? "mobile-link active" : "mobile-link";
 
-  useEffect(() => {
+  React.useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "auto";
   }, [isOpen]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) setIsOpen(false);
     };
@@ -39,16 +38,15 @@ const Navbar = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Animatsiya variantlari
   const menuVariants = {
     closed: { x: "100%", transition: { type: "spring", stiffness: 400, damping: 40 } },
     opened: { x: 0, transition: { type: "spring", stiffness: 400, damping: 40, staggerChildren: 0.1, delayChildren: 0.2 } }
-  };
+  } as const;
 
   const itemVariants = {
     closed: { opacity: 0, x: 20 },
     opened: { opacity: 1, x: 0 }
-  };
+  } as const;
 
   return (
     <motion.nav 
@@ -74,11 +72,11 @@ const Navbar = () => {
           </span>
         </Link>
 
-        {/* Desktop Menu */}
+        
         <div className="hidden md:flex items-center gap-4 lg:gap-6">
           <div className="flex items-center gap-4 lg:gap-6 border-r border-gray-700/50 pr-4">
-            {["Asosiy", "Biz haqimizda", "Kurslar", "FAQ", "Bog'lanish"].map((text, i) => {
-              const paths = ["/", "/about", "/courses", "/faq", "/contact"];
+            {["Asosiy", "Biz haqimizda", "Kurslar", "Bog'lanish"].map((text, i) => {
+              const paths = ["/", "/about", "/courses", "/contact"];
               return (
                 <NavLink key={i} to={paths[i]} end={paths[i] === "/"} className={getDesktopClass}>
                   {text}
@@ -94,14 +92,14 @@ const Navbar = () => {
             </div>
 
             <Link to="/login">
-              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="login-btn-desktop flex items-center gap-2">
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="login-btn-desktop cursor-pointer flex items-center gap-2">
                 <i className="bi bi-box-arrow-in-right text-lg"></i>
                 Kirish
               </motion.button>
             </Link>
 
             <motion.a href="https://t.me/dasturchi_life" target="_blank" rel="noopener noreferrer" whileHover={{ y: -2 }}>
-              <button className="tg-btn-desktop flex items-center gap-2">
+              <button className="tg-btn-desktop cursor-pointer flex items-center gap-2">
                 <i className="bi bi-telegram text-lg"></i>
                 Telegram
               </button>
@@ -109,15 +107,15 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Hamburger Button */}
-        <button onClick={toggleMenu} className="md:hidden text-white p-2 z-[60] relative">
+        
+        <button onClick={toggleMenu} className="md:hidden text-white p-2 z-[60] relative cursor-pointer">
           <motion.div animate={isOpen ? { rotate: 180 } : { rotate: 0 }}>
             {isOpen ? <i className="bi bi-three-dots text-2xl"></i> : <i className="bi bi-three-dots-vertical text-3xl"></i>}
           </motion.div>
         </button>
       </div>
 
-      {/* Mobile Menu Panel */}
+      
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -132,7 +130,6 @@ const Navbar = () => {
                 { name: "Asosiy", path: "/" },
                 { name: "Biz haqimizda", path: "/about" },
                 { name: "Kurslar", path: "/courses" },
-                { name: "FAQ", path: "/faq" },
                 { name: "Bog'lanish", path: "/contact" }
               ].map((link, i) => (
                 <motion.div key={i} variants={itemVariants}>
@@ -146,12 +143,12 @@ const Navbar = () => {
 
               <motion.div variants={itemVariants} className="flex flex-col gap-4">
                 <Link to="/login" onClick={closeMenu} className="w-full">
-                  <button className="mobile-action-btn border-2 border-red-500">
+                  <button className="mobile-action-btn cursor-pointer border-2 border-red-500">
                     <i className="bi bi-box-arrow-in-right text-xl"></i> Kirish
                   </button>
                 </Link>
                 <a href="https://t.me/dasturchi_life" className="w-full">
-                  <button className="mobile-action-btn bg-blue-600 shadow-lg shadow-blue-600/20">
+                  <button className="mobile-action-btn cursor-pointer bg-blue-600 shadow-lg shadow-blue-600/20">
                     <i className="bi bi-telegram text-xl"></i> Telegram
                   </button>
                 </a>

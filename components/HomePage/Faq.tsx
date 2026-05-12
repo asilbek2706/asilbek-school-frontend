@@ -11,7 +11,7 @@ const Faq = () => {
   return (
     <section className="py-20 bg-transparent">
       <div className="w-full mx-auto px-6">
-        {/* Sarlavha */}
+        
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight mb-4">
             Ko'p so'raladigan savollar
@@ -31,7 +31,7 @@ const Faq = () => {
                 }`}
               >
                 <button
-                  className="flex justify-between items-center w-full p-5 text-left outline-none"
+                  className="flex justify-between items-center w-full p-5 text-left outline-none cursor-pointer"
                   onClick={() => toggleAccordion(index)}
                 >
                   <span className={`font-bold text-lg transition-colors duration-300 ${
@@ -40,14 +40,14 @@ const Faq = () => {
                     {item.question}
                   </span>
                   
-                  {/* Plus/Minus Ikonkasi Animatsiyasi */}
+                  
                   <div className={`relative w-6 h-6 flex items-center justify-center transition-transform duration-500 ${isOpen ? "rotate-180" : ""}`}>
                     <div className="absolute w-4 h-0.5 bg-current transition-colors"></div>
                     <div className={`absolute w-0.5 h-4 bg-current transition-all duration-500 ${isOpen ? "opacity-0 rotate-90" : "opacity-100"}`}></div>
                   </div>
                 </button>
 
-                {/* Silliq ochilish animatsiyasi (Grid trick) */}
+                
                 <div className={`grid transition-all duration-500 ease-in-out ${
                   isOpen ? "grid-rows-[1fr] opacity-100 p-5 pt-0" : "grid-rows-[0fr] opacity-0 p-0"
                 }`}>

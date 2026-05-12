@@ -94,7 +94,7 @@ const LearningPaths = () => {
         </div>
       </div>
 
-      {/* Slider nuqtalari uchun maxsus stil */}
+      
       <style>{`
         .learning-swiper .swiper-pagination-bullet {
           background: #dc2626 !important;

@@ -9,7 +9,7 @@ const Footer = () => {
     >
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-px bg-gradient-to-r from-transparent via-red-500/50 to-transparent"></div>
 
-      <div className="container mx-auto"> {/* mx-auto qo'shildi */}
+      <div className="container mx-auto"> 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           
           <div className="flex flex-col items-center md:items-start text-center md:text-left gap-6">
