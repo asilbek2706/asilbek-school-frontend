@@ -53,9 +53,9 @@ const CourseDetail = () => {
         text-white
       "
     >
-      
+
       <div className="absolute inset-0 overflow-hidden">
-        
+
 
         <div
           className="
@@ -75,7 +75,7 @@ const CourseDetail = () => {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto">
-        
+
         <motion.div
           initial={{
             opacity: 0,
@@ -110,7 +110,7 @@ const CourseDetail = () => {
             mb-12
           "
         >
-          
+
           <div
             className="
               absolute inset-0
@@ -133,9 +133,9 @@ const CourseDetail = () => {
               gap-10
             "
           >
-            
+
             <div className="relative">
-              
+
               <div
                 className="
                   absolute
@@ -148,7 +148,7 @@ const CourseDetail = () => {
                 "
               />
 
-              
+
               <div
                 className="
                   relative
@@ -182,9 +182,9 @@ const CourseDetail = () => {
               </div>
             </div>
 
-            
+
             <div className="flex-1 text-center lg:text-left">
-              
+
               <div
                 className="
                   inline-flex
@@ -213,7 +213,7 @@ const CourseDetail = () => {
                 Premium Course
               </div>
 
-              
+
               <h1
                 className="
                   text-4xl
@@ -240,7 +240,7 @@ const CourseDetail = () => {
                 {course.title}
               </h1>
 
-              
+
               <p
                 className="
                   mt-6
@@ -258,7 +258,7 @@ const CourseDetail = () => {
                 {course.description}
               </p>
 
-              
+
               <div
                 className="
                   flex
@@ -320,7 +320,7 @@ const CourseDetail = () => {
           </div>
         </motion.div>
 
-        
+
         <div
           className="
             flex
@@ -374,7 +374,7 @@ const CourseDetail = () => {
           </div>
         </div>
 
-        
+
         <div className="grid gap-5">
           {course.lessons.map((lesson, index) => (
             <motion.div
@@ -424,7 +424,7 @@ const CourseDetail = () => {
                   duration-300
                 "
               >
-                
+
                 <div
                   className="
                     absolute inset-0
@@ -452,7 +452,7 @@ const CourseDetail = () => {
                   />
                 </div>
 
-                
+
                 <div
                   className="
                     relative z-10
@@ -463,7 +463,7 @@ const CourseDetail = () => {
                     gap-5
                   "
                 >
-                  
+
                   <div
                     className="
                       w-14
@@ -491,7 +491,7 @@ const CourseDetail = () => {
                     {String(index + 1).padStart(2, "0")}
                   </div>
 
-                  
+
                   <div>
                     <h3
                       className="
@@ -520,7 +520,7 @@ const CourseDetail = () => {
                       {lesson.description}
                     </p>
 
-                    
+
                     <div
                       className="
                         flex
@@ -564,7 +564,7 @@ const CourseDetail = () => {
                   </div>
                 </div>
 
-                
+
                 <div
                   className="
                     relative z-10
