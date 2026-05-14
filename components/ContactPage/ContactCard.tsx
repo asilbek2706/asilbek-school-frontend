@@ -8,9 +8,9 @@ const hexToRgba = (hex: string, alpha = 1) => {
   const parsed =
     clean.length === 3
       ? clean
-          .split("")
-          .map((c) => c + c)
-          .join("")
+        .split("")
+        .map((c) => c + c)
+        .join("")
       : clean;
 
   const bigint = parseInt(parsed, 16);
@@ -22,11 +22,7 @@ const hexToRgba = (hex: string, alpha = 1) => {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
-interface Props {
-  contact: IContact;
-}
-
-const ContactCard = ({ contact }: Props) => {
+const ContactCard = ({ contact }: { contact: IContact }) => {
   const glow = hexToRgba(contact.color || "#ffffff", 0.16);
 
   return (
@@ -177,13 +173,19 @@ const ContactCard = ({ contact }: Props) => {
 
             <div
               className="
-                text-white/25
+    text-white/25
 
-                transition-all duration-300
+    opacity-0
+    invisible
 
-                group-hover:text-white
-                group-hover:translate-x-1
-              "
+    transition-all duration-300
+
+    group-hover:opacity-100
+    group-hover:visible
+
+    group-hover:text-white
+    group-hover:translate-x-1
+  "
             >
               ↗
             </div>

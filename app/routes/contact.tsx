@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { contactData } from "../../data/contact.data";
 import ContactCard from "../../components/ContactPage/ContactCard";
+import { BadgeCheck, ShieldCheck, Zap } from "lucide-react";
 
 const Contact = () => {
   return (
@@ -433,62 +434,89 @@ const Contact = () => {
 
             {/* FEATURES */}
             <div
-              className="
-                grid
-                grid-cols-1
-                sm:grid-cols-3
-
-                gap-5
-
-                mt-10
-                pt-8
-
-                border-t border-white/10
-              "
-            >
-              {[
-                { label: "Xavfsiz va ishonchli", icon: "🛡️" },
-                { label: "Tez javob beramiz", icon: "⚡" },
-                { label: "100% sifatli xizmat", icon: "✨" },
-              ].map((item) => (
-                <div
-                  key={item.label}
                   className="
-                    flex
-                    items-center
-                    gap-3
+                    grid
+                    grid-cols-1
+                    sm:grid-cols-3
+
+                    gap-6
+
+                    mt-10
+                    pt-8
+
+                    border-t border-white/10
                   "
                 >
-                  <div
-                    className="
-                      w-11 h-11
-                      rounded-full
+                  {[
+                    {
+                      icon: <ShieldCheck size={20} />,
+                      title: "Xavfsiz va ishonchli",
+                      desc: "Ma’lumotlaringiz himoyalangan",
+                    },
+                    {
+                      icon: <Zap size={20} />,
+                      title: "Tez javob",
+                      desc: "24 soat ichida javob beramiz",
+                    },
+                    {
+                      icon: <BadgeCheck size={20} />,
+                      title: "Sifat kafolati",
+                      desc: "Premium darajadagi xizmat",
+                    },
+                  ].map((item) => (
+                    <div
+                      key={item.title}
+                      className="
+                        flex
+                        items-start
+                        gap-4
+                      "
+                    >
+                      <div
+                        className="
+                          w-12
+                          h-12
 
-                      bg-orange-500/10
-                      border border-orange-500/20
+                          rounded-2xl
 
-                      flex items-center justify-center
+                          bg-orange-500/10
+                          border border-orange-500/20
 
-                      text-orange-400
-                      font-bold
-                      text-lg
-                    "
-                  >
-                    {item.icon}
-                  </div>
+                          flex items-center justify-center
 
-                  <span
-                    className="
-                      text-sm
-                      font-medium
-                      text-white/70
-                    "
-                  >
-                    {item.label}
-                  </span>
+                          text-orange-400
+
+                          shrink-0
+                        "
+                      >
+                        {item.icon}
+                      </div>
+
+                      <div>
+                        <h4
+                          className="
+                            text-white
+                            font-bold
+                            text-sm
+                          "
+                        >
+                          {item.title}
+                        </h4>
+
+                        <p
+                          className="
+                            text-white/45
+                            text-sm
+                            mt-1
+                            leading-6
+                          "
+                        >
+                          {item.desc}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
           </div>
         </div>
       </motion.div>
