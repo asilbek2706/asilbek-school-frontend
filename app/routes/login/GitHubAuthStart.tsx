@@ -6,13 +6,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const clientId = process.env.GITHUB_CLIENT_ID;
 
   if (!clientId) {
-    throw redirect("/login/register?oauth_error=not_configured");
+    throw redirect("/auth/register?oauth_error=not_configured");
   }
 
   const requestUrl = new URL(request.url);
   const redirectUri =
     process.env.GITHUB_REDIRECT_URI ||
-    `${requestUrl.origin}/login/github/callback`;
+    `${requestUrl.origin}/auth/github/callback`;
 
   const state = crypto.randomUUID();
   const authorizationUrl = new URL("https://github.com/login/oauth/authorize");

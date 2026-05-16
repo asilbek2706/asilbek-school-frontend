@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper/modules';
@@ -48,6 +49,12 @@ const PathCard = ({ path }: { path: any }) => (
 );
 
 const LearningPaths = () => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   return (
     <section className="relative py-16 bg-transparent">
       <div className="absolute -top-[10%] -left-[10%] w-[500px] h-[500px] bg-red-600/5 blur-[150px] rounded-full pointer-events-none"></div>
@@ -71,6 +78,13 @@ const LearningPaths = () => {
         </div>
 
         <div className="lg:hidden">
+          {!isMounted ? (
+            <div className="space-y-4">
+              {paths.map((path, index) => (
+                <PathCard key={index} path={path} />
+              ))}
+            </div>
+          ) : (
           <Swiper
             modules={[Pagination, Autoplay]}
             spaceBetween={20}
@@ -91,6 +105,7 @@ const LearningPaths = () => {
               </SwiperSlide>
             ))}
           </Swiper>
+          )}
         </div>
       </div>
 

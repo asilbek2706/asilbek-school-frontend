@@ -15,6 +15,7 @@
     "rootDirs": [".", "./.react-router/types"],
     "paths": {
       "~/*": ["./app/*"],
+      "@/*": ["./src/*"],
       "@react-router/dev/routes": ["./node_modules/@react-router/dev/dist/routes.d.ts"]
     },
     "esModuleInterop": true,

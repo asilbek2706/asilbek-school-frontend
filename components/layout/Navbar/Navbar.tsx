@@ -2,26 +2,19 @@ import * as React from "react";
 import { NavLink, Link, useLocation, useNavigate } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import "./Navbar.css";
+import { useAuthStore } from "@/features/auth/store/auth.store";
+import { clearClientAuthSession } from "@/features/auth/utils/auth-session";
+import { useLogoutMutation } from "@/features/auth/hooks/useAuth";
 
 interface NavLinkProps {
   isActive: boolean;
 }
 
-type StoredProfile = {
-  fullname?: string;
-  email?: string;
-  phone?: string;
-  avatarUrl?: string;
-  authMethod?: "github" | "email";
-  githubUsername?: string;
-  githubUrl?: string;
-};
-
 const FALLBACK_AVATAR =
   "https://api.dicebear.com/9.x/initials/svg?seed=Asilbek%20School";
 
-const buildFallbackAvatar = (profile: StoredProfile | null) => {
-  const seed = profile?.fullname || profile?.email || "Asilbek School";
+const buildFallbackAvatar = (fullName?: string | null, email?: string | null) => {
+  const seed = fullName || email || "Asilbek School";
 
   return `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(
     seed
@@ -33,10 +26,9 @@ const Navbar = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
-  const [profile, setProfile] = React.useState<StoredProfile | null>(null);
-
-  /* PROFILE POPUP */
   const [profileOpen, setProfileOpen] = React.useState(false);
+  const logoutMutation = useLogoutMutation();
+  const user = useAuthStore((state) => state.user);
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
@@ -55,52 +47,17 @@ const Navbar = () => {
   const getMobileClass = ({ isActive }: NavLinkProps) =>
     isActive ? "mobile-link active" : "mobile-link";
 
-  const handleLogout = () => {
-    document.cookie = "asilbek_auth=; path=/; max-age=0";
-    localStorage.removeItem("asilbek_profile");
-    setProfile(null);
+  const handleLogout = async () => {
     setProfileOpen(false);
     closeMenu();
-    navigate("/login", { replace: true });
-  };
-
-  React.useEffect(() => {
-    const storedProfile = localStorage.getItem("asilbek_profile");
-
-    if (!storedProfile) {
-      setProfile(null);
-      return;
-    }
 
     try {
-      setProfile(JSON.parse(storedProfile) as StoredProfile);
-    } catch {
-      setProfile(null);
+      await logoutMutation.mutateAsync();
+    } finally {
+      clearClientAuthSession();
+      navigate("/auth/login", { replace: true });
     }
-  }, [location.pathname]);
-
-  React.useEffect(() => {
-    const handleStorage = (event: StorageEvent) => {
-      if (event.key !== "asilbek_profile") {
-        return;
-      }
-
-      if (!event.newValue) {
-        setProfile(null);
-        return;
-      }
-
-      try {
-        setProfile(JSON.parse(event.newValue) as StoredProfile);
-      } catch {
-        setProfile(null);
-      }
-    };
-
-    window.addEventListener("storage", handleStorage);
-
-    return () => window.removeEventListener("storage", handleStorage);
-  }, []);
+  };
 
   React.useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "auto";
@@ -151,11 +108,12 @@ const Navbar = () => {
     },
   } as const;
 
-  const avatarUrl = profile?.avatarUrl || buildFallbackAvatar(profile);
-  const displayName = profile?.fullname || "Mehmon";
-  const displayEmail = profile?.email || "Email saqlanmagan";
-  const displayPhone = profile?.phone || "Telefon kiritilmagan";
-  const accountLabel = profile?.authMethod === "github" ? "GitHub account" : "Email account";
+  const avatarUrl = user?.avatarUrl || buildFallbackAvatar(user?.fullName, user?.email);
+  const displayName = user?.fullName || "Mehmon";
+  const displayEmail = user?.email || "Email saqlanmagan";
+  const displayPhone = "Telefon kiritilmagan";
+  const accountLabel = user?.authMethod === "github" ? "GitHub account" : "Email account";
+  const isAuthenticated = Boolean(user);
 
   return (
     <motion.nav
@@ -290,9 +248,7 @@ const Navbar = () => {
             {/* PROFILE */}
             <div className="relative">
               <button
-                onClick={() =>
-                  setProfileOpen(!profileOpen)
-                }
+                onClick={() => setProfileOpen(!profileOpen)}
                 className="
                   relative
 
@@ -643,6 +599,7 @@ const Navbar = () => {
                         {/* LOGOUT */}
                         <button
                           onClick={handleLogout}
+                          disabled={logoutMutation.isPending}
                           className="
                             h-12
 
@@ -800,6 +757,7 @@ const Navbar = () => {
 
                 <button
                   onClick={handleLogout}
+                  disabled={logoutMutation.isPending}
                   className="
                     mobile-action-btn
                     cursor-pointer

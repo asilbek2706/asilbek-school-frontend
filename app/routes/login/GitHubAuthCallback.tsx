@@ -5,6 +5,13 @@ import {
   type LoaderFunctionArgs,
 } from "react-router";
 import { toast } from "sonner";
+import { useAuthStore } from "@/features/auth/store/auth.store";
+import {
+  applyClientAuthSession,
+  clearClientAuthSession,
+  clearClientCookie,
+} from "@/features/auth/utils/auth-session";
+import { buildAvatarUrl } from "@/features/auth/utils/auth-session";
 
 type GitHubUser = {
   login: string;
@@ -48,7 +55,7 @@ export async function loader({ request }: LoaderFunctionArgs): Promise<LoaderDat
   const requestUrl = new URL(request.url);
   const redirectUri =
     process.env.GITHUB_REDIRECT_URI ||
-    `${requestUrl.origin}/login/github/callback`;
+    `${requestUrl.origin}/auth/github/callback`;
 
   const code = requestUrl.searchParams.get("code");
   const state = requestUrl.searchParams.get("state");
@@ -138,34 +145,38 @@ export async function loader({ request }: LoaderFunctionArgs): Promise<LoaderDat
 export default function GitHubAuthCallback() {
   const navigate = useNavigate();
   const data = useLoaderData<LoaderData>();
+  const setSession = useAuthStore((state) => state.setSession);
 
   useEffect(() => {
     if (!data.ok || !data.profile) {
       toast.error(data.error || "GitHub authorization xato");
-      navigate("/login/register", { replace: true });
+      navigate("/auth/register", { replace: true });
       return;
     }
 
     const resolvedName = data.profile.name?.trim() || data.profile.login;
-
-    document.cookie = "asilbek_auth=1; path=/; max-age=604800";
-    document.cookie = "github_oauth_state=; path=/; max-age=0";
-
-    localStorage.setItem(
-      "asilbek_profile",
-      JSON.stringify({
-        fullname: resolvedName,
+    const session = {
+      user: {
+        id: data.profile.login,
+        fullName: resolvedName,
         email: data.profile.email || "",
-        githubUsername: data.profile.login,
-        avatarUrl: data.profile.avatar_url,
-        githubUrl: data.profile.html_url,
-        authMethod: "github",
-      })
-    );
+        avatarUrl: data.profile.avatar_url || buildAvatarUrl(resolvedName, data.profile.email || data.profile.login),
+        authMethod: "github" as const,
+        isVerified: true,
+      },
+      accessToken: crypto.randomUUID(),
+      refreshToken: crypto.randomUUID(),
+      expiresAt: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    };
+
+    clearClientCookie("github_oauth_state");
+    clearClientAuthSession();
+    setSession(session);
+    applyClientAuthSession(session);
 
     toast.success("GitHub orqali muvaffaqiyatli kirdingiz");
     navigate("/", { replace: true });
-  }, [data, navigate]);
+  }, [data, navigate, setSession]);
 
   return (
     <section className="min-h-screen flex items-center justify-center px-4">

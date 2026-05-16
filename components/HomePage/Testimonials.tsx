@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import { useEffect, useState, type FC } from 'react';
 import { Quote } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper/modules';
@@ -41,6 +41,12 @@ const TestimonialCard: React.FC<{ item: Testimonial }> = ({ item }) => (
 );
 
 const TestimonialSection: FC = () => {
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
     return (
         <section className="rounded-[2.5rem] relative bg-gradient-to-br from-gray-900/60 via-gray-800/40 to-red-950/20 border border-white/5 py-24 px-6 overflow-hidden">
             <div className="max-w-7xl mx-auto relative z-10">
@@ -61,6 +67,13 @@ const TestimonialSection: FC = () => {
                 </div>
 
                 <div className="lg:hidden">
+                    {!isMounted ? (
+                        <div className="space-y-4">
+                            {testimonials.map((item) => (
+                                <TestimonialCard key={item.id} item={item} />
+                            ))}
+                        </div>
+                    ) : (
                     <Swiper
                         modules={[Pagination, Autoplay]}
                         spaceBetween={20}
@@ -78,6 +91,7 @@ const TestimonialSection: FC = () => {
                             </SwiperSlide>
                         ))}
                     </Swiper>
+                    )}
                 </div>
 
                 <div className="mt-12 md:mt-20 text-center">

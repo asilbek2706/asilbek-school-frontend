@@ -5,6 +5,7 @@ import {
   Outlet,
   redirect,
   useLocation,
+  useLoaderData,
   Scripts,
   ScrollRestoration,
 } from "react-router";
@@ -15,27 +16,33 @@ import type { ReactNode } from "react";
 import Navbar from "../components/layout/Navbar/Navbar";
 import Footer from "../components/layout/Footer";
 import { Toaster } from "sonner";
-
-const AUTH_COOKIE_NAME = "asilbek_auth";
+import { AppProviders } from "@/app/providers/AppProviders";
+import { parseAuthSessionFromCookieHeader } from "@/features/auth/utils/auth-session";
 
 const isAuthRoute = (pathname: string) =>
-  pathname.startsWith("/login");
+  pathname.startsWith("/auth") || pathname === "/login";
 
-const hasAuthCookie = (cookieHeader: string | null) =>
-  cookieHeader?.includes(`${AUTH_COOKIE_NAME}=1`) ?? false;
+type RootLoaderData = {
+  auth: ReturnType<typeof parseAuthSessionFromCookieHeader>;
+};
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader({ request }: Route.LoaderArgs): Promise<RootLoaderData> {
   const url = new URL(request.url);
+  const auth = parseAuthSessionFromCookieHeader(request.headers.get("Cookie"));
 
   if (isAuthRoute(url.pathname)) {
-    return null;
+    if (auth) {
+      throw redirect("/");
+    }
+
+    return { auth: null };
   }
 
-  if (!hasAuthCookie(request.headers.get("Cookie"))) {
-    throw redirect("/login");
+  if (!auth) {
+    throw redirect("/auth/login");
   }
 
-  return null;
+  return { auth };
 }
 
 export const links: Route.LinksFunction = () => [
@@ -53,6 +60,7 @@ export const links: Route.LinksFunction = () => [
 
 export function Layout({ children }: { children: ReactNode }) {
   const location = useLocation();
+  const loaderData = useLoaderData<typeof loader>();
   const isAuthPage = isAuthRoute(location.pathname);
 
   return (
@@ -64,38 +72,39 @@ export function Layout({ children }: { children: ReactNode }) {
         <Links />
       </head>
       <body>
+        <AppProviders initialAuth={loaderData?.auth ?? null}>
+          <div className="flex min-h-screen flex-col">
+            {!isAuthPage && <Navbar />}
 
-        <div className="flex flex-col min-h-screen">
-          {!isAuthPage && <Navbar />}
+            <main
+              className={
+                isAuthPage
+                  ? "relative z-10 flex-grow"
+                  : "relative z-10 flex-grow container mx-auto px-4 py-8"
+              }
+            >
+              {children}
+            </main>
 
-          <main
-            className={
-              isAuthPage
-                ? "flex-grow relative z-10"
-                : "flex-grow container mx-auto px-4 py-8 relative z-10"
-            }
-          >
-            {children}
-          </main>
+            {!isAuthPage && <Footer />}
+          </div>
 
-          {!isAuthPage && <Footer />}
-        </div>
+          <Toaster
+            position="top-right"
+            richColors
+            closeButton
+            toastOptions={{
+              style: {
+                background: "rgba(27, 13, 10, 0.92)",
+                border: "1px solid rgba(255, 255, 255, 0.1)",
+                color: "#ffffff",
+              },
+            }}
+          />
 
-      <Toaster
-        position="top-right"
-        richColors
-        closeButton
-        toastOptions={{
-          style: {
-            background: "rgba(27, 13, 10, 0.92)",
-            border: "1px solid rgba(255, 255, 255, 0.1)",
-            color: "#ffffff",
-          },
-        }}
-      />
-
-      <ScrollRestoration />
-      <Scripts />
+          <ScrollRestoration />
+          <Scripts />
+        </AppProviders>
       </body>
     </html>
   );
