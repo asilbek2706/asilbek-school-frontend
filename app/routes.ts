@@ -5,7 +5,11 @@ export default [
     route("/login", "routes/login.tsx") ,
     route("/about", "routes/about.tsx"),
     route("/courses", "routes/courses.tsx"),
-    route("/courses/:id", "routes/courses/courseDetail.tsx"),
-    route("/courses/:id/lessons/:lessonTitle", "routes/courses/lessons/lessonDetail.tsx"),
+    route("/courses/:courseTitle", "routes/courses/courseDetail.tsx"),
+    route("/courses/:courseTitle/lessons/:lessonTitle", "routes/courses/lessons/lessonDetail.tsx"),
     route("/contact", "routes/contact.tsx"),
+    route("/login/verify", "routes/login/VerifyCodePage.tsx"),
+    route("/login/register", "routes/login/RegisterPage.tsx"),
+    route("/login/github", "routes/login/GitHubAuthStart.tsx"),
+    route("/login/github/callback", "routes/login/GitHubAuthCallback.tsx"),
 ] satisfies RouteConfig;

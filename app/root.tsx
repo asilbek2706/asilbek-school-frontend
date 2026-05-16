@@ -3,6 +3,8 @@ import {
   Links,
   Meta,
   Outlet,
+  redirect,
+  useLocation,
   Scripts,
   ScrollRestoration,
 } from "react-router";
@@ -12,6 +14,29 @@ import "./app.css";
 import type { ReactNode } from "react";
 import Navbar from "../components/layout/Navbar/Navbar";
 import Footer from "../components/layout/Footer";
+import { Toaster } from "sonner";
+
+const AUTH_COOKIE_NAME = "asilbek_auth";
+
+const isAuthRoute = (pathname: string) =>
+  pathname.startsWith("/login");
+
+const hasAuthCookie = (cookieHeader: string | null) =>
+  cookieHeader?.includes(`${AUTH_COOKIE_NAME}=1`) ?? false;
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const url = new URL(request.url);
+
+  if (isAuthRoute(url.pathname)) {
+    return null;
+  }
+
+  if (!hasAuthCookie(request.headers.get("Cookie"))) {
+    throw redirect("/login");
+  }
+
+  return null;
+}
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -27,6 +52,9 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export function Layout({ children }: { children: ReactNode }) {
+  const location = useLocation();
+  const isAuthPage = isAuthRoute(location.pathname);
+
   return (
     <html lang="en">
       <head>
@@ -38,14 +66,33 @@ export function Layout({ children }: { children: ReactNode }) {
       <body>
 
         <div className="flex flex-col min-h-screen">
-          <Navbar />
+          {!isAuthPage && <Navbar />}
 
-          <main className="flex-grow container mx-auto px-4 py-8 relative z-10">
+          <main
+            className={
+              isAuthPage
+                ? "flex-grow relative z-10"
+                : "flex-grow container mx-auto px-4 py-8 relative z-10"
+            }
+          >
             {children}
           </main>
 
-          <Footer />
+          {!isAuthPage && <Footer />}
         </div>
+
+      <Toaster
+        position="top-right"
+        richColors
+        closeButton
+        toastOptions={{
+          style: {
+            background: "rgba(27, 13, 10, 0.92)",
+            border: "1px solid rgba(255, 255, 255, 0.1)",
+            color: "#ffffff",
+          },
+        }}
+      />
 
       <ScrollRestoration />
       <Scripts />
