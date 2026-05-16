@@ -17,7 +17,6 @@ const Contact = () => {
     py-24
   "
 >
-  {/* MAIN CONTAINER */}
   <div
     className="
       relative
