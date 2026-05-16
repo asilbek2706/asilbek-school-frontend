@@ -10,13 +10,19 @@ import type { Course } from "../../../interfaces/courses.interface";
 
 import { courses } from "../../../data/courses.data";
 
+const getCourseSlug = (title: string) =>
+  title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
 export async function loader({
   params,
 }: LoaderFunctionArgs) {
-  const courseId = params.id;
+  const requestedCourseSlug = params.courseTitle?.toLowerCase();
 
   const course = courses.find(
-    (c) => c.id === Number(courseId)
+    (c) => getCourseSlug(c.title) === requestedCourseSlug
   );
 
   if (!course) {
@@ -392,7 +398,7 @@ const CourseDetail = () => {
               }}
             >
               <Link
-                to={`/courses/${course.id}/lessons/${getLessonSlug(
+                to={`/courses/${getCourseSlug(course.title)}/lessons/${getLessonSlug(
                   lesson.title
                 )}`}
                 className="

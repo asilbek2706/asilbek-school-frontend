@@ -2,6 +2,12 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import type { Course } from "../../interfaces/courses.interface";
 
+const getCourseSlug = (title: string) =>
+  title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
 const CourseCard = ({ course }: { course: Course }) => {
   return (
     <div
@@ -226,7 +232,7 @@ const CourseCard = ({ course }: { course: Course }) => {
             className="mt-auto pt-6 sm:pt-10 w-full"
           >
             <Link
-              to={`/courses/${course.id}`}
+              to={`/courses/${getCourseSlug(course.title)}`}
               className="
                 relative z-30
 

@@ -6,11 +6,17 @@ import { motion } from "framer-motion";
 import { courses } from "../../../../data/courses.data";
 import type { Lesson } from "../../../../interfaces/courses.interface";
 
+const getCourseSlug = (title: string) =>
+    title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+
 export async function loader({
     params,
 }: LoaderFunctionArgs) {
     const course = courses.find(
-        (c) => c.id === Number(params.id)
+        (c) => getCourseSlug(c.title) === params.courseTitle?.toLowerCase()
     );
 
     const requestedLessonSlug =
