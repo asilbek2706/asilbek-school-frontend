@@ -13,8 +13,8 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 import type { ReactNode } from "react";
-import Navbar from "../components/layout/Navbar/Navbar";
-import Footer from "../components/layout/Footer";
+import Navbar from "@/widgets/navbar/Navbar";
+import Footer from "@/widgets/footer/Footer";
 import { Toaster } from "sonner";
 import { AppProviders } from "@/app/providers/AppProviders";
 import { parseAuthSessionFromCookieHeader } from "@/features/auth/utils/auth-session";

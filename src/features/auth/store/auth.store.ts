@@ -10,6 +10,9 @@ import type {
 type AuthStoreState = {
   initialized: boolean;
   status: AuthStatus;
+  loading: boolean;
+  error: string | null;
+  cache: Record<string, unknown>;
   user: AuthUser | null;
   accessToken: string | null;
   refreshToken: string | null;
@@ -19,6 +22,8 @@ type AuthStoreState = {
   clearSession: () => void;
   setPendingVerification: (context: PendingVerificationContext | null) => void;
   setLoading: (loading: boolean) => void;
+  setError: (error: string | null) => void;
+  setCacheEntry: (key: string, value: unknown) => void;
   login: () => Promise<void>;
   logout: () => void;
   setUser: (user: AuthUser | null) => void;
@@ -27,6 +32,9 @@ type AuthStoreState = {
 const initialState = {
   initialized: false,
   status: "idle" as AuthStatus,
+  loading: false,
+  error: null,
+  cache: {},
   user: null,
   accessToken: null,
   refreshToken: null,
@@ -66,9 +74,24 @@ export const useAuthStore = create<AuthStoreState>((set) => ({
       pendingVerification: context,
     }),
   setLoading: (loading) =>
-    set({
-      status: loading ? "loading" : "anonymous",
-    }),
+    set((state) => ({
+      loading,
+      status: loading
+        ? "loading"
+        : state.user
+          ? "authenticated"
+          : state.pendingVerification
+            ? "verifying"
+            : "anonymous",
+    })),
+  setError: (error) => set({ error }),
+  setCacheEntry: (key, value) =>
+    set((state) => ({
+      cache: {
+        ...state.cache,
+        [key]: value,
+      },
+    })),
   login: async () => undefined,
   logout: () => undefined,
   setUser: (user) => set({ user }),

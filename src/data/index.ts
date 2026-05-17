@@ -1,9 +1,0 @@
-export { courses } from "./courses.data";
-export { contactData } from "./contact.data";
-export { faqData } from "./faqData";
-export { paths } from "./learningPath.data";
-export { values } from "./coreValuesData";
-export { goals } from "./ourGoals.data";
-export { steps } from "./teachingRoadmapData";
-export { technologies } from "./technologiesData";
-export { testimonials } from "./testimonialsData";

@@ -4,6 +4,7 @@ import type {
   LoginResponse,
   RegisterInput,
   RegisterResponse,
+  SessionRotationPayload,
   VerifyOtpInput,
   VerifyResponse,
 } from "@/features/auth/types/auth.types";
@@ -16,4 +17,9 @@ export const authService = {
   verifyOtp: (payload: VerifyOtpInput): Promise<VerifyResponse> => authRepository.verifyOtp(payload),
   logout: (): Promise<void> => authRepository.logout(),
   refreshSession: (session: AuthSessionSnapshot) => authRepository.refreshSession(session),
+  getSession: () => authRepository.getSession(),
+  restoreSession: () => authRepository.restoreSession(),
+  revokeSession: () => authRepository.revokeSession(),
+  prepareSessionRotation: (payload: SessionRotationPayload) =>
+    authRepository.prepareSessionRotation(payload),
 };

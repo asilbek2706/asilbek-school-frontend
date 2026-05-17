@@ -8,7 +8,11 @@
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "test": "vitest --config vitest.config.ts",
-    "test:run": "vitest run --config vitest.config.ts"
+    "test:run": "vitest run --config vitest.config.ts",
+    "test:e2e": "playwright test",
+    "openapi:types": "openapi-typescript ./src/shared/openapi/schema.yaml -o ./src/shared/generated/openapi-types.ts",
+    "openapi:orval": "orval --config ./orval.config.ts",
+    "openapi:generate": "npm run openapi:types && npm run openapi:orval"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.2.8",
@@ -39,6 +43,7 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.54.0",
     "@react-router/dev": "7.15.0",
     "@tailwindcss/vite": "^4.2.2",
     "@testing-library/jest-dom": "^6.9.1",
@@ -49,6 +54,9 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.2",
     "jsdom": "^29.1.1",
+    "msw": "^2.10.5",
+    "openapi-typescript": "^7.10.1",
+    "orval": "^7.9.0",
     "tailwindcss": "^4.2.2",
     "typescript": "^5.9.3",
     "vite": "^8.0.3",

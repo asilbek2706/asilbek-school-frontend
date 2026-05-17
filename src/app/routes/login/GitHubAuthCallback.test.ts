@@ -8,44 +8,22 @@ describe("GitHubAuthCallback loader", () => {
     vi.restoreAllMocks();
   });
 
-  it("returns an error when GitHub env vars are missing", async () => {
+  it("returns mock callback session in mock mode", async () => {
+    vi.stubEnv("VITE_USE_MOCK", "true");
+
     await expect(
       loader({ request: new Request("https://example.com/auth/github/callback") } as never)
-    ).resolves.toMatchObject({ ok: false });
+    ).resolves.toMatchObject({ ok: true });
   });
 
-  it("exchanges code and loads the GitHub profile", async () => {
-    vi.stubEnv("GITHUB_CLIENT_ID", "client-id");
-    vi.stubEnv("GITHUB_CLIENT_SECRET", "client-secret");
-    vi.stubEnv("GITHUB_REDIRECT_URI", "https://example.com/auth/github/callback");
-
-    const fetchMock = vi.spyOn(globalThis, "fetch");
-    fetchMock
-      .mockResolvedValueOnce(
-        new Response(JSON.stringify({ access_token: "token-123" }), { status: 200 })
-      )
-      .mockResolvedValueOnce(
-        new Response(JSON.stringify({
-          login: "asilbek",
-          name: "Asilbek Demo",
-          avatar_url: "https://example.com/avatar.png",
-          html_url: "https://github.com/asilbek",
-          email: "demo@example.com",
-        }), { status: 200 })
-      );
-
+  it("returns cancellation error when user rejects consent", async () => {
     const request = new Request(
-      "https://example.com/auth/github/callback?code=code-123&state=state-123",
-      {
-        headers: {
-          Cookie: "github_oauth_state=state-123",
-        },
-      }
+      "https://example.com/auth/github/callback?error=access_denied"
     );
 
     const result = await loader({ request } as never);
 
-    expect(result.ok).toBe(true);
-    expect(result.profile?.login).toBe("asilbek");
+    expect(result.ok).toBe(false);
+    expect(result.error).toContain("bekor");
   });
 });

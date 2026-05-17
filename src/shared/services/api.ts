@@ -1,1 +1,1 @@
-export { httpClient as api, httpClient } from "@/shared/api";
+export { httpClient as api, httpClient, unwrapResponse } from "@/shared/api";

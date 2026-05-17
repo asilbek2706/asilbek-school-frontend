@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { contactData } from "../../data/contact.data";
-import ContactCard from "../../components/ContactPage/ContactCard";
+import { contactData } from "@/shared/mocks/contact/contact.mock";
+import ContactCard from "@/widgets/contact/ContactCard";
 import {
   ShieldCheck,
   Zap,
@@ -335,6 +335,7 @@ const Contact = () => {
 
                       <input
                         type="text"
+                        aria-label="Ism va familiya"
                         placeholder="Ism va familiya"
                         className="
                           w-full
@@ -378,6 +379,7 @@ const Contact = () => {
 
                       <input
                         type="text"
+                        aria-label="Telefon raqami"
                         placeholder="+998 50 753 66 36"
                         className="
                           w-full
@@ -422,6 +424,7 @@ const Contact = () => {
 
                     <input
                       type="email"
+                      aria-label="Elektron pochta"
                       placeholder="Elektron pochta"
                       className="
                         w-full
@@ -464,6 +467,7 @@ const Contact = () => {
 
                     <textarea
                       rows={7}
+                      aria-label="Xabar matni"
                       placeholder="Xabaringizni shu yerga yozing..."
                       className="
                         w-full

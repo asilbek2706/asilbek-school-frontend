@@ -5,6 +5,7 @@ import type {
   LoginResponse,
   RegisterInput,
   RegisterResponse,
+  SessionRotationPayload,
   VerifyOtpInput,
   VerifyResponse,
 } from "@/features/auth/types/auth.types";
@@ -41,6 +42,8 @@ const seedDemoUser = () => {
       avatarUrl: buildAvatarUrl("Asilbek Demo", email),
       authMethod: "email",
       isVerified: true,
+      role: "student",
+      permissions: ["view_dashboard"],
       password: "Demo12345",
     });
   }
@@ -164,6 +167,8 @@ export const authMockApi = {
       avatarUrl: buildAvatarUrl(pendingRegistration.fullName, pendingRegistration.email),
       authMethod: "email",
       isVerified: true,
+      role: "student",
+      permissions: ["view_dashboard"],
       password: pendingRegistration.password,
     };
 
@@ -189,5 +194,24 @@ export const authMockApi = {
       refreshToken: crypto.randomUUID(),
       expiresAt: Date.now() + 1000 * 60 * 60 * 24 * 7,
     };
+  },
+
+  async getSession(): Promise<AuthSessionSnapshot | null> {
+    await delay(200);
+    return null;
+  },
+
+  async restoreSession(): Promise<AuthSessionSnapshot | null> {
+    await delay(200);
+    return null;
+  },
+
+  async revokeSession(): Promise<void> {
+    await delay(200);
+  },
+
+  async prepareSessionRotation(session: SessionRotationPayload): Promise<SessionRotationPayload> {
+    await delay(200);
+    return session;
   },
 };

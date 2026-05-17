@@ -3,8 +3,8 @@ import {
     type LoaderFunctionArgs,
 } from "react-router";
 import { motion } from "framer-motion";
-import { courses } from "../../../../data/courses.data";
-import type { Lesson } from "../../../../interfaces/courses.interface";
+import type { Lesson } from "@/entities/course/model/types";
+import { courseRepository } from "@/shared/services/repositories/course.repository";
 
 const getCourseSlug = (title: string) =>
     title
@@ -15,7 +15,9 @@ const getCourseSlug = (title: string) =>
 export async function loader({
     params,
 }: LoaderFunctionArgs) {
-    const course = courses.find(
+    const courseResponse = await courseRepository.list();
+
+    const course = courseResponse.data.find(
         (c) => getCourseSlug(c.title) === params.courseTitle?.toLowerCase()
     );
 

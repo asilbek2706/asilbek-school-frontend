@@ -1,11 +1,7 @@
-import CourseSection from "../../components/CoursesPage/CourseSection"
-import { SearchInput } from "../../components/CoursesPage/Input"
+import { CoursesPage } from "@/pages/courses";
 
 const Courses = () => {
-    return <div>
-        <SearchInput />
-        <CourseSection />
-    </div>
-}
+    return <CoursesPage />;
+};
 
-export default Courses
+export default Courses;

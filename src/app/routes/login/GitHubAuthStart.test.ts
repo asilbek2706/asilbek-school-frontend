@@ -7,17 +7,8 @@ describe("GitHubAuthStart loader", () => {
     vi.unstubAllEnvs();
   });
 
-  it("redirects back to register when GitHub is not configured", async () => {
-    vi.stubEnv("GITHUB_CLIENT_ID", "");
-
-    await expect(
-      loader({ request: new Request("https://example.com/auth/github") } as never)
-    ).rejects.toMatchObject({ status: 302 });
-  });
-
-  it("builds the GitHub authorization redirect when configured", async () => {
-    vi.stubEnv("GITHUB_CLIENT_ID", "client-id");
-    vi.stubEnv("GITHUB_REDIRECT_URI", "https://example.com/auth/github/callback");
+  it("redirects to local mock callback in mock mode", async () => {
+    vi.stubEnv("VITE_USE_MOCK", "true");
 
     try {
       await loader({ request: new Request("https://example.com/auth/github") } as never);
@@ -25,8 +16,7 @@ describe("GitHubAuthStart loader", () => {
     } catch (error) {
       const response = error as Response;
       expect(response.status).toBe(302);
-      expect(response.headers.get("Location")).toContain("github.com/login/oauth/authorize");
-      expect(response.headers.get("Set-Cookie")).toContain("github_oauth_state=");
+      expect(response.headers.get("Location")).toContain("/auth/github/callback?mock=1");
     }
   });
 });

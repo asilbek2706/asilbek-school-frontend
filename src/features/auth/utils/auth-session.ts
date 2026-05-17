@@ -3,7 +3,6 @@ import type { AuthSessionSnapshot } from "@/features/auth/types/auth.types";
 import {
   AUTH_COOKIE_NAME,
   AUTH_SESSION_COOKIE_NAME,
-  AUTH_STORAGE_KEY,
   AUTH_TOKEN_TTL_SECONDS,
 } from "./auth.constants";
 
@@ -47,11 +46,16 @@ export const parseAuthSessionFromCookieHeader = (
 };
 
 export const readClientAuthSession = (): AuthSessionSnapshot | null => {
-  if (typeof window === "undefined") {
+  if (typeof document === "undefined") {
     return null;
   }
 
-  return deserializeAuthSession(window.localStorage.getItem(AUTH_STORAGE_KEY));
+  const matchedCookie = document.cookie
+    .split(";")
+    .map((part) => part.trim())
+    .find((part) => part.startsWith(`${AUTH_SESSION_COOKIE_NAME}=`));
+
+  return deserializeAuthSession(matchedCookie?.split("=").slice(1).join("="));
 };
 
 export const applyClientAuthSession = (session: AuthSessionSnapshot) => {
@@ -62,7 +66,6 @@ export const applyClientAuthSession = (session: AuthSessionSnapshot) => {
   const serializedSession = serializeAuthSession(session);
   document.cookie = getCookiePair(AUTH_COOKIE_NAME, "1", AUTH_TOKEN_TTL_SECONDS);
   document.cookie = getCookiePair(AUTH_SESSION_COOKIE_NAME, serializedSession, AUTH_TOKEN_TTL_SECONDS);
-  window.localStorage.setItem(AUTH_STORAGE_KEY, serializedSession);
 };
 
 export const clearClientAuthSession = () => {
@@ -72,8 +75,6 @@ export const clearClientAuthSession = () => {
 
   document.cookie = `${AUTH_COOKIE_NAME}=; Path=/; Max-Age=0; SameSite=Lax`;
   document.cookie = `${AUTH_SESSION_COOKIE_NAME}=; Path=/; Max-Age=0; SameSite=Lax`;
-  window.localStorage.removeItem(AUTH_STORAGE_KEY);
-  window.localStorage.removeItem("asilbek_profile");
 };
 
 export const clearClientCookie = (name: string) => {

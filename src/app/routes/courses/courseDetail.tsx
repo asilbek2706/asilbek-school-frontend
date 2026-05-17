@@ -6,9 +6,8 @@ import {
 
 import { motion } from "framer-motion";
 
-import type { Course } from "../../../interfaces/courses.interface";
-
-import { courses } from "../../../data/courses.data";
+import type { Course } from "@/entities/course/model/types";
+import { courseRepository } from "@/shared/services/repositories/course.repository";
 
 const getCourseSlug = (title: string) =>
   title
@@ -20,8 +19,9 @@ export async function loader({
   params,
 }: LoaderFunctionArgs) {
   const requestedCourseSlug = params.courseTitle?.toLowerCase();
+  const courseResponse = await courseRepository.list();
 
-  const course = courses.find(
+  const course = courseResponse.data.find(
     (c) => getCourseSlug(c.title) === requestedCourseSlug
   );
 

@@ -1,0 +1,15 @@
+openapi: 3.0.3
+info:
+  title: My Courses API
+  version: 0.0.1
+paths:
+  /auth/session:
+    get:
+      operationId: getSession
+      responses:
+        '200':
+          description: Session response
+          content:
+            application/json:
+              schema:
+                type: object

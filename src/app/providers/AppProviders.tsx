@@ -8,9 +8,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 
 import type { AuthSessionSnapshot } from "@/features/auth/types/auth.types";
 import { useAuthStore } from "@/features/auth/store/auth.store";
-import {
-  readClientAuthSession,
-} from "@/features/auth/utils/auth-session";
+import { cookieSessionAdapter } from "@/features/auth/api/session.adapter";
 import { createAppQueryClient } from "@/shared/api";
 
 type AppProvidersProps = {
@@ -27,7 +25,7 @@ const queryClient = createAppQueryClient();
 export const AppProviders = ({ children, initialAuth }: AppProvidersProps) => {
   const hydrate = useAuthStore((state) => state.hydrate);
 
-  const resolvedAuth = initialAuth ?? readClientAuthSession();
+  const resolvedAuth = initialAuth ?? cookieSessionAdapter.read();
 
   useEffect(() => {
     hydrate(resolvedAuth);

@@ -1,0 +1,9 @@
+export { attendanceRepository } from "./attendance.repository";
+export { contentRepository } from "./content.repository";
+export { courseRepository } from "./course.repository";
+export { dashboardRepository } from "./dashboard.repository";
+export { faqRepository } from "./faq.repository";
+export { notificationRepository } from "./notification.repository";
+export { profileRepository } from "./profile.repository";
+export { studentRepository } from "./student.repository";
+export { teacherRepository } from "./teacher.repository";

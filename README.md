@@ -1,87 +1,73 @@
-# Welcome to React Router!
+# My Courses Frontend
 
-A modern, production-ready template for building full-stack React applications using React Router.
+Enterprise-ready React + TypeScript frontend with repository-driven data access, mock/backend switching, RBAC scaffolding, OpenAPI generation prep, and dashboard/CMS expansion points.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+## Architecture
 
-## Features
+- `src/app`: providers, router guards, app config
+- `src/pages`: page-level composition (UI contracts remain stable)
+- `src/widgets`: reusable visual sections
+- `src/features`: domain behavior (auth, github-auth, profile, dashboard, etc.)
+- `src/entities`: domain models (course, faq, ...)
+- `src/shared`: platform layer (api, mocks, openapi, generated, constants, utils, services)
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+## Mock and Backend Switch
 
-## Getting Started
+- Switch flag: `VITE_USE_MOCK=true|false`
+- Decision point: repository layer only
+- Contract shape:
+  - `success`
+  - `data`
+  - `pagination`
+  - `meta`
+  - `errors`
 
-### Installation
+When backend arrives, update only:
 
-Install the dependencies:
+- `src/shared/services/repositories/*`
+- `src/shared/api/http.ts`
+- `src/shared/generated/*`
+- `src/shared/openapi/schema.yaml`
 
-```bash
-npm install
-```
+UI layers (`pages/widgets/features` components, forms, layouts, hooks signatures, routes) remain unchanged.
 
-### Development
+## Auth and Session
 
-Start the development server with HMR:
+- Auth logic moved to service/repository boundaries
+- Cookie-first session adapter (`session.adapter.ts`)
+- Session lifecycle APIs prepared: restore, refresh, revoke, rotation prep
+- GitHub OAuth architecture is backend-driven (frontend never owns secrets)
 
-```bash
-npm run dev
-```
+## RBAC
 
-Your application will be available at `http://localhost:5173`.
+- Roles: `admin`, `teacher`, `student`, `parent`
+- Permission matrix in `src/app/config/rbac.ts`
+- Guards:
+  - `ProtectedRoute`
+  - `PublicRoute`
+  - `RoleRoute`
+  - `PermissionRoute`
 
-## Building for Production
+## OpenAPI
 
-Create a production build:
+- Source schema: `src/shared/openapi/schema.yaml`
+- Generated clients: `src/shared/generated/*`
+- Tooling:
+  - `npm run openapi:types`
+  - `npm run openapi:orval`
+  - `npm run openapi:generate`
 
-```bash
-npm run build
-```
+## Tests
 
-## Deployment
+- Unit/integration: Vitest + React Testing Library
+- API mocking: MSW (`src/test/msw`)
+- E2E scaffold: Playwright (`e2e/*.spec.ts`)
 
-### Docker Deployment
+## Scripts
 
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
----
-
-Built with ❤️ using React Router.
+- `npm run dev`
+- `npm run build`
+- `npm run typecheck`
+- `npm run test`
+- `npm run test:e2e`
+- `npm run openapi:generate`

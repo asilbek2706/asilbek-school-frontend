@@ -1,18 +1,7 @@
-import AboutHeroBanner from "../../components/AboutPage/Banner";
-import CoreValues from "../../components/AboutPage/CoreValues";
-import OurGoals from "../../components/AboutPage/OurGoals";
-import TeachingRoadmap from "../../components/AboutPage/TeachingRoadmap";
+import { AboutPage as AboutPageView } from "@/pages/about";
 
-const AboutPage = () => {
-
-  return (
-    <div>
-        <AboutHeroBanner />
-        <OurGoals />
-        <CoreValues />
-        <TeachingRoadmap />
-    </div>
-  );
+const AboutRoute = () => {
+  return <AboutPageView />;
 };
 
-export default AboutPage;
+export default AboutRoute;

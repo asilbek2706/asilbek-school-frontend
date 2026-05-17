@@ -1,4 +1,13 @@
 export type AuthMethod = "email" | "github";
+export type UserRole = "admin" | "teacher" | "student" | "parent";
+
+export type UserPermission =
+  | "manage_students"
+  | "manage_teachers"
+  | "view_dashboard"
+  | "manage_attendance"
+  | "manage_courses"
+  | "manage_notifications";
 
 export type AuthStatus = "idle" | "loading" | "authenticated" | "anonymous" | "verifying";
 
@@ -11,6 +20,8 @@ export interface AuthUser {
   avatarUrl: string;
   authMethod: AuthMethod;
   isVerified: boolean;
+  role?: UserRole;
+  permissions?: UserPermission[];
 }
 
 export interface AuthSessionSnapshot {
@@ -55,6 +66,10 @@ export interface RegisterResponse extends AuthMutationResponse {
 
 export interface VerifyResponse extends AuthMutationResponse {
   user: AuthUser;
+}
+
+export interface SessionRotationPayload {
+  refreshToken?: string;
 }
 
 export interface PendingVerificationContext {

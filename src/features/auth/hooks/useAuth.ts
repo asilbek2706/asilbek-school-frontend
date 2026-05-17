@@ -7,10 +7,7 @@ import type {
   RegisterInput,
   VerifyOtpInput,
 } from "@/features/auth/types/auth.types";
-import {
-  applyClientAuthSession,
-  clearClientAuthSession,
-} from "@/features/auth/utils/auth-session";
+import { cookieSessionAdapter } from "@/features/auth/api/session.adapter";
 import { normalizeError } from "@/shared/errors";
 
 export const useLoginMutation = () => {
@@ -21,7 +18,7 @@ export const useLoginMutation = () => {
     mutationFn: (payload: LoginInput) => authService.login(payload),
     onSuccess: (data) => {
       setSession(data.session);
-      applyClientAuthSession(data.session);
+      cookieSessionAdapter.write(data.session);
       setLoading(false);
     },
     onMutate: () => {
@@ -100,7 +97,7 @@ export const useLogoutMutation = () => {
     mutationFn: () => authService.logout(),
     onSuccess: () => {
       clearSession();
-      clearClientAuthSession();
+      cookieSessionAdapter.clear();
     },
   });
 };
