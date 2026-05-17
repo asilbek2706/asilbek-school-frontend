@@ -2,6 +2,7 @@ import { forwardRef } from "react";
 import type { ButtonHTMLAttributes } from "react";
 
 import { cn } from "@/lib/utils";
+import { Spinner } from "./spinner";
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   loading?: boolean;
@@ -18,7 +19,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       )}
       {...props}
     >
-      {loading ? "Yuklanmoqda..." : children}
+      {loading ? (
+        <span className="inline-flex items-center gap-2">
+          <Spinner className="h-4 w-4" />
+          Yuklanmoqda...
+        </span>
+      ) : (
+        children
+      )}
     </button>
   )
 );

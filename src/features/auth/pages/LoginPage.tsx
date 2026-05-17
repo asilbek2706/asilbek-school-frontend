@@ -9,6 +9,7 @@ import { AuthLayout } from "@/app/layouts/AuthLayout";
 import { Button } from "@/shared/ui";
 import { LoginSchema, type LoginFormValues } from "../schemas/auth.schemas";
 import { useLoginMutation } from "../hooks/useAuth";
+import { applyAuthError } from "../utils/auth-error";
 
 type LoginLocationState = {
   message?: string;
@@ -46,7 +47,7 @@ const LoginPage = () => {
       toast.success(response.message);
       navigate("/", { replace: true });
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Login amalga oshmadi";
+      const message = applyAuthError(error, form.setError) || "Login amalga oshmadi";
       setServerMessage(message);
       toast.error(message);
     }

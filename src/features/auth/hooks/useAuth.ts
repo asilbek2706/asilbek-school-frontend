@@ -11,15 +11,25 @@ import {
   applyClientAuthSession,
   clearClientAuthSession,
 } from "@/features/auth/utils/auth-session";
+import { normalizeError } from "@/shared/errors";
 
 export const useLoginMutation = () => {
   const setSession = useAuthStore((state) => state.setSession);
+  const setLoading = useAuthStore((state) => state.setLoading);
 
   return useMutation({
     mutationFn: (payload: LoginInput) => authService.login(payload),
     onSuccess: (data) => {
       setSession(data.session);
       applyClientAuthSession(data.session);
+      setLoading(false);
+    },
+    onMutate: () => {
+      setLoading(true);
+    },
+    onError: (error) => {
+      normalizeError(error);
+      setLoading(false);
     },
   });
 };
@@ -28,6 +38,7 @@ export const useRegisterMutation = () => {
   const setPendingVerification = useAuthStore(
     (state) => state.setPendingVerification
   );
+  const setLoading = useAuthStore((state) => state.setLoading);
 
   return useMutation({
     mutationFn: (payload: RegisterInput) => authService.register(payload),
@@ -39,6 +50,14 @@ export const useRegisterMutation = () => {
         expiresAt: data.expiresAt,
         debugOtp: data.debugOtp,
       });
+      setLoading(false);
+    },
+    onMutate: () => {
+      setLoading(true);
+    },
+    onError: (error) => {
+      normalizeError(error);
+      setLoading(false);
     },
   });
 };
@@ -47,11 +66,20 @@ export const useVerifyOtpMutation = () => {
   const clearPendingVerification = useAuthStore(
     (state) => state.setPendingVerification
   );
+  const setLoading = useAuthStore((state) => state.setLoading);
 
   return useMutation({
     mutationFn: (payload: VerifyOtpInput) => authService.verifyOtp(payload),
     onSuccess: () => {
       clearPendingVerification(null);
+      setLoading(false);
+    },
+    onMutate: () => {
+      setLoading(true);
+    },
+    onError: (error) => {
+      normalizeError(error);
+      setLoading(false);
     },
   });
 };

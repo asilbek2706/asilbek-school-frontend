@@ -10,6 +10,7 @@ import { Button } from "@/shared/ui";
 import { VerifySchema, type VerifyFormValues } from "../schemas/auth.schemas";
 import { useVerifyOtpMutation } from "../hooks/useAuth";
 import { useAuthStore } from "../store/auth.store";
+import { applyAuthError } from "../utils/auth-error";
 
 type VerifyLocationState = {
   purpose?: "register" | "login";
@@ -106,7 +107,7 @@ const VerifyOtpPage = () => {
 
       navigate("/", { replace: true });
     } catch (error) {
-      const message = error instanceof Error ? error.message : "OTP tasdiqlanmadi";
+      const message = applyAuthError(error, form.setError) || "OTP tasdiqlanmadi";
       setInfoMessage(message);
       toast.error(message);
     }
@@ -153,7 +154,7 @@ const VerifyOtpPage = () => {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-5">
-          <AuthTextField
+        <AuthTextField
           label="Email"
           type="email"
           placeholder="you@example.com"

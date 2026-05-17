@@ -118,6 +118,7 @@ export const OtpInput = ({
             inputRefs.current[index] = element;
           }}
           type="text"
+          aria-label={`OTP raqami ${index + 1}`}
           inputMode="numeric"
           autoComplete="one-time-code"
           maxLength={length}

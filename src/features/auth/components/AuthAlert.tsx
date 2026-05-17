@@ -12,7 +12,7 @@ const tones = {
 };
 
 export const AuthAlert = ({ tone = "info", children }: AuthAlertProps) => (
-  <div className={`rounded-2xl border px-4 py-3 text-sm ${tones[tone]}`}>
+  <div role="alert" aria-live="polite" className={`rounded-2xl border px-4 py-3 text-sm ${tones[tone]}`}>
     {children}
   </div>
 );

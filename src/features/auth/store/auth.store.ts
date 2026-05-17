@@ -12,12 +12,16 @@ type AuthStoreState = {
   status: AuthStatus;
   user: AuthUser | null;
   accessToken: string | null;
+  refreshToken: string | null;
   pendingVerification: PendingVerificationContext | null;
   hydrate: (session: AuthSessionSnapshot | null) => void;
   setSession: (session: AuthSessionSnapshot) => void;
   clearSession: () => void;
   setPendingVerification: (context: PendingVerificationContext | null) => void;
-  markLoading: () => void;
+  setLoading: (loading: boolean) => void;
+  login: () => Promise<void>;
+  logout: () => void;
+  setUser: (user: AuthUser | null) => void;
 };
 
 const initialState = {
@@ -25,6 +29,7 @@ const initialState = {
   status: "idle" as AuthStatus,
   user: null,
   accessToken: null,
+  refreshToken: null,
   pendingVerification: null,
 };
 
@@ -36,6 +41,7 @@ export const useAuthStore = create<AuthStoreState>((set) => ({
       status: session ? "authenticated" : "anonymous",
       user: session?.user ?? null,
       accessToken: session?.accessToken ?? null,
+      refreshToken: session?.refreshToken ?? null,
     }),
   setSession: (session) =>
     set({
@@ -43,6 +49,7 @@ export const useAuthStore = create<AuthStoreState>((set) => ({
       status: "authenticated",
       user: session.user,
       accessToken: session.accessToken,
+      refreshToken: session.refreshToken ?? null,
     }),
   clearSession: () =>
     set({
@@ -50,6 +57,7 @@ export const useAuthStore = create<AuthStoreState>((set) => ({
       status: "anonymous",
       user: null,
       accessToken: null,
+      refreshToken: null,
       pendingVerification: null,
     }),
   setPendingVerification: (context) =>
@@ -57,7 +65,13 @@ export const useAuthStore = create<AuthStoreState>((set) => ({
       status: context ? "verifying" : "anonymous",
       pendingVerification: context,
     }),
-  markLoading: () => set({ status: "loading" }),
+  setLoading: (loading) =>
+    set({
+      status: loading ? "loading" : "anonymous",
+    }),
+  login: async () => undefined,
+  logout: () => undefined,
+  setUser: (user) => set({ user }),
 }));
 
 export const selectIsAuthenticated = (state: AuthStoreState) =>
@@ -71,6 +85,7 @@ export const getAuthSnapshot = () => {
     status: state.status,
     user: state.user,
     accessToken: state.accessToken,
+    refreshToken: state.refreshToken,
     pendingVerification: state.pendingVerification,
   };
 };

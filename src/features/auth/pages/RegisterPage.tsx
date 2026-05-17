@@ -9,6 +9,7 @@ import { AuthLayout } from "@/app/layouts/AuthLayout";
 import { Button } from "@/shared/ui";
 import { RegisterSchema, type RegisterFormValues } from "../schemas/auth.schemas";
 import { useRegisterMutation } from "../hooks/useAuth";
+import { applyAuthError } from "../utils/auth-error";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -52,7 +53,7 @@ const RegisterPage = () => {
         },
       });
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Ro‘yxatdan o‘tish amalga oshmadi";
+      const message = applyAuthError(error, form.setError) || "Ro‘yxatdan o‘tish amalga oshmadi";
       setServerMessage(message);
       toast.error(message);
     }
